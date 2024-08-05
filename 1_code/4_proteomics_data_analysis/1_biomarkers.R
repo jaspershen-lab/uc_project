@@ -3,13 +3,11 @@ setwd(get_project_wd())
 rm(list = ls())
 source('1_code/100_tools.R')
 
-###peaks
-load("3_data_analysis/1_metabolomics_data/peaks/metabolomics_object.RData")
 
-metabolomics_object@expression_data$Ctr_11
+load("3_data_analysis/1_data_preparation/2_proteomics_data/proteomics_object.RData")
 
-dir.create("3_data_analysis/3_metabolomics_data_analysis/1_biomarker")
-setwd("3_data_analysis/3_metabolomics_data_analysis/1_biomarker")
+dir.create("3_data_analysis/4_proteomics_data_analysis/1_biomarker", showWarnings = FALSE, recursive = TRUE)
+setwd("3_data_analysis/4_proteomics_data_analysis/1_biomarker")
 
 library(tidymass)
 
@@ -17,24 +15,44 @@ library(tidymass)
 
 library(tidymass)
 
-marker <-
-  metabolomics_object %>%
-  activate_mass_dataset(what = "variable_info") %>%
-  dplyr::filter(p_value < 0.05 &
-                  VIP > 1) %>%
-  extract_variable_info() %>%
-  pull(Compound.name)
+control_sample_id <-
+  proteomics_object %>%
+  activate_mass_dataset(what = "sample_info") %>%
+  dplyr::filter(group == "Control") %>%
+  extract_sample_info() %>%
+  pull(sample_id)
 
-length(marker)
+uc_sample_id <-
+  proteomics_object %>%
+  activate_mass_dataset(what = "sample_info") %>%
+  dplyr::filter(group == "UC") %>%
+  extract_sample_info() %>%
+  pull(sample_id)
 
-marker[!is.na(marker)]
+proteomics_object <-
+  proteomics_object %>%
+  mutate_fc(
+    control_sample_id = control_sample_id,
+    case_sample_id = uc_sample_id,
+    mean_median = "median"
+  ) %>%
+  mutate_p_value(
+    control_sample_id = control_sample_id,
+    case_sample_id = uc_sample_id,
+    method = "t.test",
+    p_adjust_methods = "fdr"
+  )
+
+temp_data <-
+  proteomics_object@variable_info %>%
+  dplyr::filter(gene_name == "ASS1")
 
 plot <-
-  metabolomics_object %>%
-  volcano_plot2(
+  proteomics_object %>%
+  volcano_plot3(
     fc_column_name = "fc",
     log2_fc = TRUE,
-    point_size_scale = "VIP",
+    point_size_scale = "p_value",
     p_value_column_name = "p_value",
     labs_x = "log2(Fold change)",
     labs_y = "-log(FDR, 10)",
@@ -43,11 +61,25 @@ plot <-
     p_value_cutoff = 0.05,
     point_alpha = 0.5,
     add_text = FALSE,
-    text_from = "Compound.name"
+    text_from = "protein_name"
   ) +
   scale_color_manual(values = up_down_color) +
-  scale_size_continuous(range = c(1, 8)) +
-  theme_base
+  scale_size_continuous(range = c(1, 6)) +
+  theme_base +
+  scale_x_continuous(limits = c(-5, 5)) +
+  geom_text(aes(
+    x = log(fc, 2),
+    y = -log(p_value, 10),
+    label = protein_name
+  ), data = temp_data) +
+  geom_point(aes(
+    x = log(fc, 2),
+    y = -log(p_value, 10)
+  ),
+  shape = 21,
+  size = 10,
+  color = "black",
+  data = temp_data)
 
 plot
 
@@ -60,7 +92,7 @@ ggsave(plot,
 library(Rtsne)
 ####using the biomarkers
 object <-
-  metabolomics_object %>%
+  proteomics_object %>%
   activate_mass_dataset(what = "variable_info") %>%
   dplyr::filter(p_value < 0.05 &
                   VIP > 1) %>%
@@ -117,7 +149,7 @@ ggsave(plot,
 library(Rtsne)
 ####using the identified biomarkers
 object <-
-  metabolomics_object %>%
+  proteomics_object %>%
   activate_mass_dataset(what = "variable_info") %>%
   dplyr::filter(p_value < 0.05 &
                   VIP > 1) %>%
@@ -171,7 +203,7 @@ ggsave(plot,
 
 ###Heatmap
 object <-
-  metabolomics_object %>%
+  proteomics_object %>%
   activate_mass_dataset(what = "variable_info") %>%
   dplyr::filter(p_value < 0.05 &
                   VIP > 1) %>%
@@ -312,8 +344,8 @@ object@expression_data[c(9, 48), ] %>% rowMeans()
 
 ##remove 4 metabolites
 
-metabolomics_object <-
-  metabolomics_object %>%
+proteomics_object <-
+  proteomics_object %>%
   activate_mass_dataset(what = "variable_info") %>%
   dplyr::filter(
     !variable_id %in% c(
@@ -325,7 +357,7 @@ metabolomics_object <-
   )
 
 object <-
-  metabolomics_object %>%
+  proteomics_object %>%
   activate_mass_dataset(what = "variable_info") %>%
   dplyr::filter(p_value < 0.05 &
                   VIP > 1) %>%
@@ -375,10 +407,7 @@ column_annotation <- HeatmapAnnotation(
 )
 
 row_annotation <-
-  row_annotation(
-    up_down = anno_block(gp = gpar(fill = up_down_color)),
-    fc = anno_block(gp = gpar(fill = up_down_color))
-    )
+  row_annotation(up_down = anno_block(gp = gpar(fill = up_down_color)), fc = anno_block(gp = gpar(fill = up_down_color)))
 
 
 fc_col_fun <-
@@ -386,8 +415,7 @@ fc_col_fun <-
 
 ha_right <-
   rowAnnotation(
-    fc = anno_simple(log(object@variable_info$fc, 2),
-                     col = fc_col_fun),
+    fc = anno_simple(log(object@variable_info$fc, 2), col = fc_col_fun),
     fdr = anno_lines(
       x = -log(object@variable_info$p_value, 10),
       add_points = FALSE,

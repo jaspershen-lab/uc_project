@@ -1,0 +1,55 @@
+library(r4projects)
+setwd(get_project_wd())
+rm(list = ls())
+source('1_code/100_tools.R')
+
+data1 <-
+  readxl::read_xlsx("2_data/Source Data file for NCOMMS-22-46768-update-2.xlsx",
+                    sheet = 22)
+
+dir.create(
+  "3_data_analysis/10_mdla/3_tissue_HE",
+  showWarnings = TRUE,
+  recursive = TRUE
+)
+setwd("3_data_analysis/10_mdla/3_tissue_HE")
+
+
+data1
+
+data1 <-
+  rbind(
+    data.frame(group = "Control", value = data1$Control),
+    data.frame(group = "DSS", value = data1$Model),
+    data.frame(group = "MDLA", value = data1$MDLA),
+    data.frame(group = "5_ASA", value = data1$`5-ASA`)
+  ) %>%
+  dplyr::mutate(group = factor(group, levels = c("Control", "DSS", "MDLA", "5_ASA")))
+
+
+plot <-
+  ggbetweenstats(
+    data  = data1,
+    x  = group,
+    y  = value,
+    type = "nonparametric",
+    pairwise.comparisons = FALSE,
+    pairwise.display = "all",
+    p.adjust.method = "none",
+    point.args = list(
+      alpha = 0.9,
+      size = 3,
+      position = position_jitter(width = 0.1)
+    )
+  ) +
+  theme_base +
+  labs(x = "", y = "H-score") +
+  theme(legend.position = "") +
+  scale_color_manual(values = disease_color4)
+
+plot
+
+ggsave(plot,
+       filename = "H-score.pdf",
+       width = 5,
+       height = 5)
