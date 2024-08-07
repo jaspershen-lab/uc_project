@@ -27,7 +27,7 @@ colnames(data1)[1] <- "Day"
 data1 <-
   data1 %>%
   as.data.frame() %>%
-  rename_with(~ gsub("\\.\\.\\.", "_", .)) %>%
+  rename_with( ~ gsub("\\.\\.\\.", "_", .)) %>%
   tidyr::pivot_longer(cols = -Day,
                       names_to = "sample_id",
                       values_to = "value") %>%
@@ -94,7 +94,7 @@ colnames(data2)[1] <- "Day"
 data2 <-
   data2 %>%
   as.data.frame() %>%
-  rename_with(~ gsub("\\.\\.\\.", "_", .)) %>%
+  rename_with( ~ gsub("\\.\\.\\.", "_", .)) %>%
   tidyr::pivot_longer(cols = -Day,
                       names_to = "sample_id",
                       values_to = "value") %>%

@@ -24,25 +24,48 @@ sex_color <-
 
 
 disease_color <-
-  c("Control" = "#8F7700FF",
+  c(
+    "Control" = "#8F7700FF",
     "DSS" = "#A73030FF",
-    "Arg" = "#0073C2FF")
+    "Arg" = "#0073C2FF"
+  )
 
 disease_color2 <-
-  c("Control" = "#8F7700FF",
+  c(
+    "Control" = "#8F7700FF",
     "Vector" = "#A73030FF",
-    "ASS1_OE" = "#631879FF")
+    "ASS1_OE" = "#631879FF"
+  )
 
 disease_color3 <-
-  c("Control" = "#8F7700FF",
+  c(
+    "Control" = "#8F7700FF",
     "Vector" = "#A73030FF",
-    "shRNA" = "#EFC000FF")
+    "shRNA" = "#EFC000FF"
+  )
 
 disease_color4 <-
-  c("Control" = "#8F7700FF",
+  c(
+    "Control" = "#8F7700FF",
     "DSS" = "#A73030FF",
     "MDLA" = "#008280FF",
-    "5_ASA" = "#7AA6DCFF")
+    "5_ASA" = "#7AA6DCFF"
+  )
+
+disease_color5 <-
+  c(
+    "Control" = "#8F7700FF",
+    "DSS" = "#A73030FF",
+    "MDLA" = "#008280FF",
+    "C_01" = "#7AA6DCFF"
+  )
+
+disease_color6 <-
+  c(
+    "Control" = "#8F7700FF",
+    "Arg" = "#0073C2FF"
+  )
+
 
 show_col(ggsci::pal_jco()(n = 10))
 
@@ -58,7 +81,8 @@ theme_base <-
   theme(
     panel.grid.major = element_blank(),
     axis.text = element_text(size = 12),
-    axis.title = element_text(size = 13)
+    axis.title = element_text(size = 13),
+    strip.text = element_text(size = 13)
   )
 
 volcano_plot2 <-
@@ -282,8 +306,10 @@ volcano_plot3 <-
         dplyr::mutate(log10_p = -log(get(p_value_column_name), 10)) %>%
         dplyr::mutate(
           marker = case_when(
-            log2_fc > log(fc_up_cutoff, 2) & log10_p > -log(p_value_cutoff, 10) ~ "UP",
-            log2_fc < log(fc_down_cutoff, 2) & log10_p > -log(p_value_cutoff, 10) ~ "DOWN",
+            log2_fc > log(fc_up_cutoff, 2) &
+              log10_p > -log(p_value_cutoff, 10) ~ "UP",
+            log2_fc < log(fc_down_cutoff, 2) &
+              log10_p > -log(p_value_cutoff, 10) ~ "DOWN",
             TRUE ~ "NO"
           )
         )
@@ -295,7 +321,8 @@ volcano_plot3 <-
         dplyr::mutate(
           marker = case_when(
             log2_fc > fc_up_cutoff & log10_p > -log(p_value_cutoff, 10) ~ "UP",
-            log2_fc < fc_down_cutoff & log10_p > -log(p_value_cutoff, 10) ~ "DOWN",
+            log2_fc < fc_down_cutoff &
+              log10_p > -log(p_value_cutoff, 10) ~ "DOWN",
             TRUE ~ "NO"
           )
         )

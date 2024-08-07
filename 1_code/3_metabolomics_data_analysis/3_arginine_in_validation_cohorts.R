@@ -17,14 +17,12 @@ data1 <-
 data1 <-
   data1[-c(1), ]
 
-
 data2 <-
   data[, c(4, 5)] %>%
   as.data.frame()
 
 data2 <-
   data2[-c(1), ]
-
 
 data3 <-
   data[, c(7, 8)] %>%
@@ -56,7 +54,6 @@ data1 <-
   dplyr::filter(!is.na(value)) %>%
   dplyr::mutate(value = as.numeric(value))
 
-
 data2 <-
   rbind(
     data.frame(
@@ -75,7 +72,6 @@ data2 <-
   dplyr::filter(!is.na(value)) %>%
   dplyr::mutate(value = as.numeric(value))
 
-
 data3 <-
   rbind(
     data.frame(
@@ -93,7 +89,6 @@ data3 <-
   ) %>%
   dplyr::filter(!is.na(value)) %>%
   dplyr::mutate(value = as.numeric(value))
-
 
 data <-
   rbind(data1,

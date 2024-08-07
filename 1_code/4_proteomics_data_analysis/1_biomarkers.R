@@ -6,7 +6,11 @@ source('1_code/100_tools.R')
 
 load("3_data_analysis/1_data_preparation/2_proteomics_data/proteomics_object.RData")
 
-dir.create("3_data_analysis/4_proteomics_data_analysis/1_biomarker", showWarnings = FALSE, recursive = TRUE)
+dir.create(
+  "3_data_analysis/4_proteomics_data_analysis/1_biomarker",
+  showWarnings = FALSE,
+  recursive = TRUE
+)
 setwd("3_data_analysis/4_proteomics_data_analysis/1_biomarker")
 
 library(tidymass)
@@ -72,14 +76,13 @@ plot <-
     y = -log(p_value, 10),
     label = protein_name
   ), data = temp_data) +
-  geom_point(aes(
-    x = log(fc, 2),
-    y = -log(p_value, 10)
-  ),
-  shape = 21,
-  size = 10,
-  color = "black",
-  data = temp_data)
+  geom_point(
+    aes(x = log(fc, 2), y = -log(p_value, 10)),
+    shape = 21,
+    size = 10,
+    color = "black",
+    data = temp_data
+  )
 
 plot
 
