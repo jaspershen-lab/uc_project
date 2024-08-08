@@ -51,6 +51,10 @@ temp_data <-
   proteomics_object@variable_info %>%
   dplyr::filter(gene_name == "ASS1")
 
+
+proteomics_object@variable_info %>%
+  dplyr::filter(gene_name == "ASL")
+
 plot <-
   proteomics_object %>%
   volcano_plot3(

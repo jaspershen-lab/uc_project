@@ -81,6 +81,37 @@ ggsave(plot,
        height = 5)
 
 
+ezANOVA(
+  data = data1 %>% dplyr::filter(group %in% c("Control", "Vector")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  type = 3
+) %>%
+  print()
+
+ezANOVA(
+  data = data1 %>% dplyr::filter(group %in% c("Control", "shRNA")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  type = 3
+) %>%
+  print()
+
+ezANOVA(
+  data = data1 %>% dplyr::filter(group %in% c("Vector", "shRNA")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  type = 3
+) %>%
+  print()
+
+
 ###figure 5B
 
 data2 <-
@@ -142,6 +173,40 @@ ggsave(plot,
        width = 7,
        height = 5)
 
+
+library(ez)
+
+ezANOVA(
+  data = data2 %>% dplyr::filter(group %in% c("Control", "Vector")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  type = 3
+) %>%
+  print()
+
+
+ezANOVA(
+  data = data2 %>% dplyr::filter(group %in% c("Control", "shRNA")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  type = 3
+) %>%
+  print()
+
+ezANOVA(
+  data = data2 %>% dplyr::filter(group %in% c("Vector", "shRNA")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  type = 3
+) %>%
+  print()
+
 ###figure 5c
 data3 <-
   readxl::read_xlsx("../../../2_data/Source Data file for NCOMMS-22-46768-update-2.xlsx",
@@ -184,6 +249,26 @@ ggsave(plot,
        filename = "Figure5c.pdf",
        width = 5,
        height = 5)
+
+
+t.test(data3$value[data3$group == "Control"],
+       data3$value[data3$group == "Vector"],
+       paired = FALSE,
+       var.equal = FALSE) %>%
+  print()
+
+t.test(data3$value[data3$group == "Control"],
+       data3$value[data3$group == "shRNA"],
+       paired = FALSE,
+       var.equal = FALSE) %>%
+  print()
+
+t.test(data3$value[data3$group == "Vector"],
+       data3$value[data3$group == "shRNA"],
+       paired = FALSE,
+       var.equal = FALSE) %>%
+  print()
+
 
 ###figure 5e
 data1 <-

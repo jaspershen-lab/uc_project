@@ -74,6 +74,39 @@ ggsave(plot,
        width = 7,
        height = 5)
 
+library(ez)
+
+
+ezANOVA(
+  data = data %>% dplyr::filter(group %in% c("Control", "DSS")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  type = 3
+) %>%
+  print()
+
+ezANOVA(
+  data = data %>% dplyr::filter(group %in% c("Control", "C_01")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  type = 3
+) %>%
+  print()
+
+ezANOVA(
+  data = data %>% dplyr::filter(group %in% c("DSS", "C_01")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  type = 3
+) %>%
+  print()
+
 ###Figure 9F
 data <-
   readxl::read_xlsx("../../../2_data/Source Data file for NCOMMS-22-46768-update-2.xlsx",
@@ -103,6 +136,7 @@ plot <-
       position = position_jitter(width = 0.1)
     ),
     centrality.label.args = list(size = 4),
+    # centrality.plotting = FALSE,
     centrality.type = "nonparametric"
   ) +
   theme_base +
@@ -146,6 +180,7 @@ plot <-
       position = position_jitter(width = 0.1)
     ),
     centrality.label.args = list(size = 4),
+    # centrality.plotting = FALSE,
     centrality.type = "nonparametric"
   ) +
   theme_base +
@@ -453,8 +488,19 @@ plot
 
 ggsave(plot,
        filename = "figure9l_1.pdf",
-       width = 6,
+       width = 5,
        height = 5)
+
+
+t.test(ass1$value[ass1$group == "Control"],
+       ass1$value[ass1$group == "Control+C-01"])
+
+t.test(ass1$value[ass1$group == "Model"],
+       ass1$value[ass1$group == "Model+C-01"])
+
+t.test(ass1$value[ass1$group == "Control"],
+       ass1$value[ass1$group == "Model"])
+
 
 ##cox2
 plot <-
@@ -485,8 +531,17 @@ plot
 
 ggsave(plot,
        filename = "figure9l_2.pdf",
-       width = 6,
+       width = 5,
        height = 5)
+
+t.test(cox2$value[cox2$group == "Control"],
+       cox2$value[cox2$group == "Control+C-01"])
+
+t.test(cox2$value[cox2$group == "Model"],
+       cox2$value[cox2$group == "Model+C-01"])
+
+t.test(cox2$value[cox2$group == "Control"],
+       cox2$value[cox2$group == "Model"])
 
 ##p_stat3/stat3
 plot <-
@@ -517,8 +572,18 @@ plot
 
 ggsave(plot,
        filename = "figure9l_3.pdf",
-       width = 6,
+       width = 5,
        height = 5)
+
+
+t.test(p_stat3_stat3$value[p_stat3_stat3$group == "Control"],
+       p_stat3_stat3$value[p_stat3_stat3$group == "Control+C-01"])
+
+t.test(p_stat3_stat3$value[p_stat3_stat3$group == "Model"],
+       p_stat3_stat3$value[p_stat3_stat3$group == "Model+C-01"])
+
+t.test(p_stat3_stat3$value[p_stat3_stat3$group == "Control"],
+       p_stat3_stat3$value[p_stat3_stat3$group == "Model"])
 
 ##p_mtor/mtor
 plot <-
@@ -549,8 +614,19 @@ plot
 
 ggsave(plot,
        filename = "figure9l_4.pdf",
-       width = 6,
+       width = 5,
        height = 5)
+
+t.test(p_mtor_mtor$value[p_mtor_mtor$group == "Control"],
+       p_mtor_mtor$value[p_mtor_mtor$group == "Control+C-01"])
+
+t.test(p_mtor_mtor$value[p_mtor_mtor$group == "Control"],
+       p_mtor_mtor$value[p_mtor_mtor$group == "Model"])
+
+t.test(p_mtor_mtor$value[p_mtor_mtor$group == "Model"],
+       p_mtor_mtor$value[p_mtor_mtor$group == "Model+C-01"])
+
+
 
 ###p_s6/s6
 plot <-
@@ -581,8 +657,18 @@ plot
 
 ggsave(plot,
        filename = "figure9l_5.pdf",
-       width = 6,
+       width = 5,
        height = 5)
+
+
+t.test(p_s6_s6$value[p_s6_s6$group == "Control"],
+       p_s6_s6$value[p_s6_s6$group == "Control+C-01"])
+
+t.test(p_s6_s6$value[p_s6_s6$group == "Control"],
+       p_s6_s6$value[p_s6_s6$group == "Model"])
+
+t.test(p_s6_s6$value[p_s6_s6$group == "Model"],
+       p_s6_s6$value[p_s6_s6$group == "Model+C-01"])
 
 
 ###Figure 9M
@@ -630,7 +716,6 @@ ggsave(plot,
        filename = "figure9m.pdf",
        width = 5,
        height = 5)
-
 
 ###Figure 9N
 data <-

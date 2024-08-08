@@ -75,6 +75,38 @@ plot <-
 
 plot
 
+# Perform repeated measures ANOVA
+library(ez)
+ezANOVA(
+  data = data1 %>% dplyr::filter(group %in% c("Control", "Vector")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  type = 3
+) %>%
+  print()
+
+ezANOVA(
+  data = data1 %>% dplyr::filter(group %in% c("Control", "ASS1_OE")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  type = 3
+) %>%
+  print()
+
+ezANOVA(
+  data = data1 %>% dplyr::filter(group %in% c("Vector", "ASS1_OE")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  type = 3
+) %>%
+  print()
+
 ggsave(plot,
        filename = "figure4a.pdf",
        width = 7,
@@ -142,6 +174,40 @@ ggsave(plot,
        width = 7,
        height = 5)
 
+library(ez)
+
+  ezANOVA(
+    data = data2 %>% dplyr::filter(group %in% c("Control", "Vector")),
+    dv = value,
+    wid = sample_id,
+    within = Day,
+    between = group,
+    type = 3
+  ) %>%
+  print()
+
+
+
+  ezANOVA(
+    data = data2 %>% dplyr::filter(group %in% c("Control", "ASS1_OE")),
+    dv = value,
+    wid = sample_id,
+    within = Day,
+    between = group,
+    type = 3
+  ) %>%
+  print()
+
+  ezANOVA(
+    data = data2 %>% dplyr::filter(group %in% c("Vector", "ASS1_OE")),
+    dv = value,
+    wid = sample_id,
+    within = Day,
+    between = group,
+    type = 3
+  ) %>%
+  print()
+
 ###figure 4c
 data3 <-
   readxl::read_xlsx("../../../2_data/Source Data file for NCOMMS-22-46768-update-2.xlsx",
@@ -184,6 +250,20 @@ ggsave(plot,
        filename = "figure4c.pdf",
        width = 5,
        height = 5)
+
+
+t.test(data3$value[data3$group == "Control"],
+       data3$value[data3$group == "Vector"],
+       paired = FALSE)
+
+t.test(data3$value[data3$group == "Control"],
+       data3$value[data3$group == "ASS1_OE"],
+       paired = FALSE)
+
+t.test(data3$value[data3$group == "Vector"],
+       data3$value[data3$group == "ASS1_OE"],
+       paired = FALSE)
+
 
 ###figure 4e
 data1 <-

@@ -82,6 +82,45 @@ ggsave(plot,
        height = 5)
 
 
+library(ez)
+
+ezANOVA(
+  data = data1 %>% dplyr::filter(group %in% c("Control", "DSS")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  detailed = TRUE
+)
+
+ezANOVA(
+  data = data1 %>% dplyr::filter(group %in% c("Control", "MDLA")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  detailed = TRUE
+)
+
+ezANOVA(
+  data = data1 %>% dplyr::filter(group %in% c("DSS", "MDLA")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  detailed = TRUE
+)
+
+ezANOVA(
+  data = data1 %>% dplyr::filter(group %in% c("DSS", "5_ASA")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  detailed = TRUE
+)
+
+
 ###Figure 3E
 data2 <-
   readxl::read_xlsx("../../../2_data/Source Data file for NCOMMS-22-46768-update-2.xlsx",
@@ -143,6 +182,36 @@ ggsave(plot,
        filename = "figure3e.pdf",
        width = 7,
        height = 5)
+
+
+library(ez)
+
+ezANOVA(
+  data = data2 %>% dplyr::filter(group %in% c("Control", "DSS")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  detailed = TRUE
+)
+
+ezANOVA(
+  data = data2 %>% dplyr::filter(group %in% c("DSS", "MDLA")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  detailed = TRUE
+)
+
+ezANOVA(
+  data = data2 %>% dplyr::filter(group %in% c("DSS", "5_ASA")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  detailed = TRUE
+)
 
 
 ##figure 3F

@@ -124,6 +124,14 @@ plot1 <-
 
 plot1
 
+
+wilcox.test(data1$value[data1$group == "Control"],
+            data1$value[data1$group == "UC"])
+
+mean(data1$value[data1$group == "UC"])/
+mean(data1$value[data1$group == "Control"])
+
+
 ggsave(plot1,
        filename = "figure1d_1.pdf",
        width = 5,
@@ -156,6 +164,13 @@ ggsave(plot2,
        width = 5,
        height = 5)
 
+wilcox.test(data2$value[data2$group == "Control"],
+            data2$value[data2$group == "UC"])
+
+mean(data2$value[data2$group == "UC"])/
+  mean(data2$value[data2$group == "Control"])
+
+
 plot3 <-
   ggbetweenstats(
     data  = data3,
@@ -183,6 +198,12 @@ ggsave(plot3,
        width = 5,
        height = 5)
 
+
+wilcox.test(data3$value[data3$group == "Control"],
+            data3$value[data3$group == "UC"])
+
+mean(data3$value[data3$group == "UC"])/
+  mean(data3$value[data3$group == "Control"])
 
 ###Figure 1G
 data <-
@@ -318,6 +339,9 @@ ggsave(plot,
        filename = "figure1i.pdf",
        width = 5,
        height = 5)
+
+t.test(data$value[data$group == "Control"],
+       data$value[data$group == "UC"])
 
 ###Figure 1J
 data2 <-

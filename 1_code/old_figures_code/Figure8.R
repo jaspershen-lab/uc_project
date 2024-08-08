@@ -70,6 +70,11 @@ ggsave(plot,
        width = 6,
        height = 5)
 
+t.test(data$value[data$group == "0"], data$value[data$group == "12"])
+t.test(data$value[data$group == "12"], data$value[data$group == "24"])
+t.test(data$value[data$group == "24"], data$value[data$group == "48"])
+
+
 
 ####figure 8b
 data1 <-
@@ -130,8 +135,15 @@ plot
 
 ggsave(plot,
        filename = "figure8b.pdf",
-       width = 5,
+       width = 4,
        height = 5)
+
+
+t.test(data$value[data$group == "Control" & data$class == "Promoter-AcH3"],
+       data$value[data$group == "IL-6" & data$class == "Promoter-AcH3"])
+
+t.test(data$value[data$group == "Control" & data$class == "Exon1-AcH3"],
+       data$value[data$group == "IL-6" & data$class == "Exon1-AcH3"])
 
 
 ###Figure 8c
@@ -191,8 +203,15 @@ plot
 
 ggsave(plot,
        filename = "figure8c.pdf",
-       width = 5,
+       width = 4,
        height = 5)
+
+t.test(data$value[data$group == "Control" & data$class == "Promoter-H3K27Me3"],
+       data$value[data$group == "IL-6" & data$class == "Promoter-H3K27Me3"])
+
+t.test(data$value[data$group == "Control" & data$class == "Exon1-H3K27Me3"],
+       data$value[data$group == "IL-6" & data$class == "Exon1-H3K27Me3"])
+
 
 ###H3K4Me3 Figure 8d
 data1 <-
@@ -252,8 +271,16 @@ plot
 
 ggsave(plot,
        filename = "figure8d.pdf",
-       width = 5,
+       width = 4,
        height = 5)
+
+
+t.test(data$value[data$group == "Control" & data$class == "Promoter-H3K4Me3"],
+       data$value[data$group == "IL-6" & data$class == "Promoter-H3K4Me3"])
+
+t.test(data$value[data$group == "Control" & data$class == "Exon1-H3K4Me3"],
+       data$value[data$group == "IL-6" & data$class == "Exon1-H3K4Me3"])
+
 
 ##H3K9Me2 Figure 8e
 data1 <-
@@ -312,8 +339,14 @@ plot
 
 ggsave(plot,
        filename = "figure8e.pdf",
-       width = 5,
+       width = 4,
        height = 5)
+
+t.test(data$value[data$group == "Control" & data$class == "Promoter-H3K9Me2"],
+       data$value[data$group == "IL-6" & data$class == "Promoter-H3K9Me2"])
+
+t.test(data$value[data$group == "Control" & data$class == "Exon1-H3K9Me2"],
+       data$value[data$group == "IL-6" & data$class == "Exon1-H3K9Me2"])
 
 
 ###Figure 8H
@@ -418,6 +451,27 @@ ggsave(plot,
        filename = "figure8i.pdf",
        width = 6,
        height = 5)
+
+
+t.test(data$value[data$group == "Control"],
+       data$value[data$group == "c-Myc"])
+
+t.test(data$value[data$group == "Control"],
+       data$value[data$group == "IL-6"])
+
+t.test(data$value[data$group == "Control"],
+       data$value[data$group == "IL-6+c-Myc"])
+
+t.test(data$value[data$group == "c-Myc"],
+       data$value[data$group == "IL-6"])
+
+t.test(data$value[data$group == "c-Myc"],
+       data$value[data$group == "IL-6+c-Myc"])
+
+t.test(data$value[data$group == "IL-6"],
+       data$value[data$group == "IL-6+c-Myc"])
+
+
 
 ######Figure 8J
 data1 <-
@@ -785,6 +839,16 @@ plot
 
 ggsave(plot,
        filename = "Figure8n.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
+
+
+t.test(data$value[data$group == "Control" & data$class == "IP: P300 IB:c-Myc"],
+       data$value[data$group == "IL-6" & data$class == "IP: P300 IB:c-Myc"])
+
+t.test(data$value[data$group == "Control" & data$class == "IP: KDM3A IB:c-Myc"],
+       data$value[data$group == "IL-6" & data$class == "IP: KDM3A IB:c-Myc"])
+
+t.test(data$value[data$group == "Control" & data$class == "IP: KDM3A IB:P300"],
+       data$value[data$group == "IL-6" & data$class == "IP: KDM3A IB:P300"])

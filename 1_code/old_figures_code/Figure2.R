@@ -18,7 +18,7 @@ data1 <-
 data1 <-
   data1 %>%
   as.data.frame() %>%
-  rename_with(~ gsub("\\.\\.\\.", "_", .)) %>%
+  rename_with( ~ gsub("\\.\\.\\.", "_", .)) %>%
   tidyr::pivot_longer(cols = -Day,
                       names_to = "sample_id",
                       values_to = "value") %>%
@@ -89,6 +89,44 @@ ggsave(plot,
        width = 7,
        height = 5)
 
+
+# Perform repeated measures ANOVA
+library(ez)
+ezANOVA(
+  data = data1 %>% dplyr::filter(group %in% c("Control", "DSS")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  type = 3
+) %>%
+  print()
+
+ezANOVA(
+  data = data1 %>% dplyr::filter(group %in% c("Control", "Arg")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  type = 3
+) %>%
+  print()
+
+ezANOVA(
+  data = data1 %>% dplyr::filter(group %in% c("DSS", "Arg")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  type = 3
+) %>%
+  print()
+
+# Display the results
+print(anova_results)
+
+
+
 ###Figure 2B
 data2 <-
   readxl::read_xlsx("../../../2_data/Source Data file for NCOMMS-22-46768-update-2.xlsx",
@@ -99,7 +137,7 @@ colnames(data2)[1] <- "Day"
 data2 <-
   data2 %>%
   as.data.frame() %>%
-  rename_with( ~ gsub("\\.\\.\\.", "_", .)) %>%
+  rename_with(~ gsub("\\.\\.\\.", "_", .)) %>%
   tidyr::pivot_longer(cols = -Day,
                       names_to = "sample_id",
                       values_to = "value") %>%
@@ -149,6 +187,41 @@ ggsave(plot,
        width = 7,
        height = 5)
 
+
+library(ez)
+
+ezANOVA(
+  data = data2 %>% dplyr::filter(group %in% c("Control", "DSS")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  type = 3
+) %>%
+  print()
+
+
+ezANOVA(
+  data = data2 %>% dplyr::filter(group %in% c("Control", "Arg")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  type = 3
+) %>%
+  print()
+
+
+ezANOVA(
+  data = data2 %>% dplyr::filter(group %in% c("DSS", "Arg")),
+  dv = value,
+  wid = sample_id,
+  within = Day,
+  between = group,
+  type = 3
+) %>%
+  print()
+
 ##Figure 2C
 data3 <-
   readxl::read_xlsx("../../../2_data/Source Data file for NCOMMS-22-46768-update-2.xlsx",
@@ -190,6 +263,10 @@ ggsave(plot,
        width = 5,
        height = 5)
 
+
+t.test(data3$value[data3$group == "Control"], data3$value[data3$group == "DSS"])
+t.test(data3$value[data3$group == "Control"], data3$value[data3$group == "Arg"])
+t.test(data3$value[data3$group == "DSS"], data3$value[data3$group == "Arg"])
 
 ###Figure 2E
 data1 <-
@@ -234,6 +311,11 @@ ggsave(plot,
        filename = "figure2e.pdf",
        width = 5,
        height = 5)
+
+
+t.test(data1$value[data1$group == "Control"], data1$value[data1$group == "DSS"])
+t.test(data1$value[data1$group == "Control"], data1$value[data1$group == "Arg"])
+t.test(data1$value[data1$group == "DSS"], data1$value[data1$group == "Arg"])
 
 ###Figure 2F
 ##MPO
@@ -281,6 +363,10 @@ ggsave(plot,
        height = 5)
 
 
+t.test(data1$value[data1$group == "Control"], data1$value[data1$group == "DSS"])
+t.test(data1$value[data1$group == "Control"], data1$value[data1$group == "Arg"])
+t.test(data1$value[data1$group == "DSS"], data1$value[data1$group == "Arg"])
+
 ###Figure 2G
 ##IL6
 data2 <-
@@ -327,6 +413,10 @@ ggsave(plot,
        width = 6,
        height = 5)
 
+
+t.test(data2$value[data2$group == "Control"], data2$value[data2$group == "DSS"])
+t.test(data2$value[data2$group == "Control"], data2$value[data2$group == "Arg"])
+t.test(data2$value[data2$group == "DSS"], data2$value[data2$group == "Arg"])
 
 ###Figure 2H
 data3 <-
@@ -489,6 +579,11 @@ ggsave(plot,
        width = 6,
        height = 5)
 
+t.test(ass1$value[ass1$group == "Control"], ass1$value[ass1$group == "DSS"])
+t.test(ass1$value[ass1$group == "Control"], ass1$value[ass1$group == "Arg"])
+t.test(ass1$value[ass1$group == "DSS"], ass1$value[ass1$group == "Arg"])
+
+
 ##cox2
 plot <-
   ggbetweenstats(
@@ -519,6 +614,10 @@ ggsave(plot,
        width = 6,
        height = 5)
 
+t.test(cox2$value[cox2$group == "Control"], cox2$value[cox2$group == "DSS"])
+t.test(cox2$value[cox2$group == "Control"], cox2$value[cox2$group == "Arg"])
+t.test(cox2$value[cox2$group == "DSS"], cox2$value[cox2$group == "Arg"])
+
 ##p_stat3/stat3
 plot <-
   ggbetweenstats(
@@ -548,6 +647,10 @@ ggsave(plot,
        filename = "figure2i_3.pdf",
        width = 6,
        height = 5)
+
+t.test(p_stat3_stat3$value[p_stat3_stat3$group == "Control"], p_stat3_stat3$value[p_stat3_stat3$group == "DSS"])
+t.test(p_stat3_stat3$value[p_stat3_stat3$group == "Control"], p_stat3_stat3$value[p_stat3_stat3$group == "Arg"])
+t.test(p_stat3_stat3$value[p_stat3_stat3$group == "DSS"], p_stat3_stat3$value[p_stat3_stat3$group == "Arg"])
 
 
 ##p_mtor/mtor
@@ -580,6 +683,10 @@ ggsave(plot,
        width = 6,
        height = 5)
 
+t.test(p_mtor_mtro$value[p_mtor_mtro$group == "Control"], p_mtor_mtro$value[p_mtor_mtro$group == "DSS"])
+t.test(p_mtor_mtro$value[p_mtor_mtro$group == "Control"], p_mtor_mtro$value[p_mtor_mtro$group == "Arg"])
+t.test(p_mtor_mtro$value[p_mtor_mtro$group == "DSS"], p_mtor_mtro$value[p_mtor_mtro$group == "Arg"])
+
 ###p_s6/s6
 plot <-
   ggbetweenstats(
@@ -610,6 +717,10 @@ ggsave(plot,
        width = 6,
        height = 5)
 
+
+t.test(p_s6_s6$value[p_s6_s6$group == "Control"], p_s6_s6$value[p_s6_s6$group == "DSS"])
+t.test(p_s6_s6$value[p_s6_s6$group == "Control"], p_s6_s6$value[p_s6_s6$group == "Arg"])
+t.test(p_s6_s6$value[p_s6_s6$group == "DSS"], p_s6_s6$value[p_s6_s6$group == "Arg"])
 
 ###figure 2j
 data1 <-
@@ -656,6 +767,11 @@ ggsave(plot,
        width = 5,
        height = 5)
 
+t.test(data1$value[data1$group == "Control"], data1$value[data1$group == "DSS"])
+t.test(data1$value[data1$group == "Control"], data1$value[data1$group == "Arg"])
+t.test(data1$value[data1$group == "DSS"], data1$value[data1$group == "Arg"])
+
+
 ###Figure 2K
 data2 <-
   readxl::read_xlsx("../../../2_data/Source Data file for NCOMMS-22-46768-update-2.xlsx",
@@ -699,3 +815,8 @@ ggsave(plot,
        filename = "figure2k.pdf",
        width = 5,
        height = 5)
+
+
+t.test(data2$value[data2$group == "Control"], data2$value[data2$group == "DSS"])
+t.test(data2$value[data2$group == "Control"], data2$value[data2$group == "Arg"])
+t.test(data2$value[data2$group == "DSS"], data2$value[data2$group == "Arg"])

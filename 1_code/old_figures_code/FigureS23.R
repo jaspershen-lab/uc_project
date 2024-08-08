@@ -78,12 +78,20 @@ plot <-
 
 plot
 
+
+t.test(as.numeric(data$value[data$group == "Control"]),
+       as.numeric(data$value[data$group == "Model"]))
+
+t.test(as.numeric(data$value[data$group == "Control"]),
+       as.numeric(data$value[data$group == "Model+MDLA"]))
+
+t.test(as.numeric(data$value[data$group == "Model"]),
+       as.numeric(data$value[data$group == "Model+MDLA"]))
+
 ggsave(plot,
        filename = "figure_s23a.pdf",
        width = 5,
        height = 5)
-
-
 
 
 
@@ -162,6 +170,15 @@ ggsave(plot,
 
 
 
+t.test(as.numeric(data$value[data$group == "Control"]),
+       as.numeric(data$value[data$group == "Model"]))
+
+t.test(as.numeric(data$value[data$group == "Control"]),
+       as.numeric(data$value[data$group == "Model + Arg"]))
+
+t.test(as.numeric(data$value[data$group == "Model"]),
+       as.numeric(data$value[data$group == "Model + Arg"]))
+
 
 
 ####c and e
@@ -233,10 +250,14 @@ ggsave(plot,
        width = 5,
        height = 5)
 
+t.test(as.numeric(data$iNOS[data$group == "Control"]),
+       as.numeric(data$iNOS[data$group == "Model"]))
 
+t.test(as.numeric(data$iNOS[data$group == "Control"]),
+       as.numeric(data$iNOS[data$group == "Model+MDLA"]))
 
-
-
+t.test(as.numeric(data$iNOS[data$group == "Model"]),
+       as.numeric(data$iNOS[data$group == "Model+MDLA"]))
 
 
 plot <-
@@ -272,6 +293,14 @@ ggsave(plot,
 
 
 
+t.test(as.numeric(data$eNOS[data$group == "Control"]),
+       as.numeric(data$eNOS[data$group == "Model"]))
+
+t.test(as.numeric(data$eNOS[data$group == "Control"]),
+       as.numeric(data$eNOS[data$group == "Model+MDLA"]))
+
+t.test(as.numeric(data$eNOS[data$group == "Model"]),
+       as.numeric(data$eNOS[data$group == "Model+MDLA"]))
 
 
 
@@ -481,7 +510,14 @@ ggsave(plot,
        height = 5)
 
 
+t.test(as.numeric(data$iNOS[data$group == "Control"]),
+       as.numeric(data$iNOS[data$group == "Model"]))
 
+t.test(as.numeric(data$iNOS[data$group == "Control"]),
+       as.numeric(data$iNOS[data$group == "Model+Arginine"]))
+
+t.test(as.numeric(data$iNOS[data$group == "Model"]),
+       as.numeric(data$iNOS[data$group == "Model+Arginine"]))
 
 
 
@@ -518,7 +554,14 @@ ggsave(plot,
 
 
 
+t.test(as.numeric(data$eNOS[data$group == "Control"]),
+       as.numeric(data$eNOS[data$group == "Model"]))
 
+t.test(as.numeric(data$eNOS[data$group == "Control"]),
+       as.numeric(data$eNOS[data$group == "Model+Arginine"]))
+
+t.test(as.numeric(data$eNOS[data$group == "Model"]),
+       as.numeric(data$eNOS[data$group == "Model+Arginine"]))
 
 
 
@@ -631,3 +674,4 @@ ggsave(plot,
        filename = "figure_s23j.pdf",
        width = 5,
        height = 5)
+
