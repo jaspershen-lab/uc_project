@@ -3,33 +3,17 @@ setwd(get_project_wd())
 rm(list = ls())
 source('1_code/100_tools.R')
 
-library(r4projects)
-setwd(get_project_wd())
-rm(list = ls())
-source('1_code/100_tools.R')
 
-load(
-  "3_data_analysis/1_data_preparation/3_validation_cohort_subject_info/subject_info_validation1.RData"
-)
-load(
-  "3_data_analysis/1_data_preparation/3_validation_cohort_subject_info/subject_info_validation2.RData"
-)
-load(
-  "3_data_analysis/1_data_preparation/3_validation_cohort_subject_info/subject_info_validation3.RData"
-)
+subject_info <-
+  readxl::read_xlsx("3_data_analysis/supplementary_data/data1/supplementary_data1.xlsx")
 
 dir.create("3_data_analysis/new_figures/Figure_S1", recursive = TRUE)
 setwd("3_data_analysis/new_figures/Figure_S1")
 
 ####validation cohort 1
-
 sample_info <-
-  subject_info_validation1 %>%
-  dplyr::mutate(group = case_when(
-    stringr::str_detect(sample_id, "Ctr") ~ "Control",
-    stringr::str_detect(sample_id, "UC") ~ "UC",
-    TRUE ~ "NA"
-  ))
+  subject_info %>%
+  dplyr::filter(cohort == "validation1")
 
 library(ggpie)
 
@@ -329,22 +313,10 @@ circos.track(
 
 
 
-
-
-
-
-
-
-
-
 ####validation cohort 2
 sample_info <-
-  subject_info_validation2 %>%
-  dplyr::mutate(group = case_when(
-    stringr::str_detect(sample_id, "Ctr") ~ "Control",
-    stringr::str_detect(sample_id, "UC") ~ "UC",
-    TRUE ~ "NA"
-  ))
+  subject_info %>%
+  dplyr::filter(cohort == "validation2")
 
 library(ggpie)
 
@@ -643,19 +615,10 @@ circos.track(
 
 
 
-
-
-
-
-
 ####validation cohort 3
 sample_info <-
-  subject_info_validation3 %>%
-  dplyr::mutate(group = case_when(
-    stringr::str_detect(sample_id, "Ctr") ~ "Control",
-    stringr::str_detect(sample_id, "UC") ~ "UC",
-    TRUE ~ "NA"
-  ))
+  subject_info %>%
+  dplyr::filter(cohort == "validation3")
 
 library(ggpie)
 
@@ -964,9 +927,7 @@ ggsave(plot_cohort2,
        width = 20,
        height = 5)
 
-ggsave(plot_cohort1,
-       filename = "cohort1.pdf",
+ggsave(plot_cohort3,
+       filename = "cohort3.pdf",
        width = 20,
        height = 5)
-
-

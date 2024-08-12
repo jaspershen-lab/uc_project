@@ -3,218 +3,332 @@ setwd(get_project_wd())
 rm(list = ls())
 source('1_code/100_tools.R')
 
-###positive
-variable_info_pos <-
-  data_pos %>%
-  dplyr::select(name:"rt(s)") %>%
-  dplyr::rename(
-    variable_id = name,
-    Compound.name = description,
-    VIP = VIP,
-    fc = "Fold change",
-    p_value = "p-value",
-    mz = "m/z",
-    rt = "rt(s)"
+subject_info <-
+  readxl::read_xlsx("3_data_analysis/supplementary_data/data1/supplementary_data1.xlsx")
+
+dir.create("3_data_analysis/new_figures/Figure_1", recursive = TRUE)
+
+########Figure1_b
+library(circlize)
+##age, sex, bmi, group
+
+df <-
+  data.frame(
+    factors = subject_info %>% dplyr::filter(cohort == "discovery") %>% pull(subject_id),
+    x = 1,
+    y = 1,
+    subject_info %>% dplyr::filter(cohort == "discovery"),
+    stringsAsFactors = TRUE
   ) %>%
-  dplyr::mutate(variable_id = paste(variable_id, "POS", sep = "_")) %>%
-  as.data.frame()
+  # dplyr::arrange(FREG8_Age) %>%
+  dplyr::mutate(factors = factor(factors, levels = factors))
 
-expression_data_pos <-
-  data_pos %>%
-  dplyr::select(-c(name:"rt(s)")) %>%
-  rename_all(~ str_replace_all(., "-", "_")) %>%
-  as.data.frame()
+circos.par(
+  "track.height" = 0.2,
+  start.degree = 85,
+  clock.wise = TRUE,
+  gap.after = c(rep(0, nrow(df) - 1), 10),
+  cell.padding = c(0, 0, 0, 0)
+)
 
-rownames(expression_data_pos) <- variable_info_pos$variable_id
+circos.initialize(factors = df$factors,
+                  x = df$x,
+                  xlim = c(0.5, 1.5))
 
-sample_info_pos <-
-  data.frame(sample_id = colnames(expression_data_pos)) %>%
-  dplyr::mutate(group = case_when(
-    grepl("Ctr", sample_id) ~ "Control",
-    grepl("UC", sample_id) ~ "UC",
-    grepl("QC", sample_id) ~ "QC",
-    TRUE ~ "Unknown"
-  )) %>%
-  dplyr::mutate(class = case_when(group == "QC" ~ "QC", TRUE ~ "Subject"))
+##age
+range(df$age, na.rm = TRUE)
+temp_value <- df$age
 
-#####positive
-object_pos <-
-  create_mass_dataset(
-    sample_info = sample_info_pos,
-    variable_info = variable_info_pos,
-    expression_data = expression_data_pos
-  )
+circos.track(
+  factors = df$factors,
+  # x = df$x,
+  y = temp_value,
+  ylim = c(0.8 * min(temp_value), 1.1 * max(temp_value, na.rm = TRUE)),
+  bg.border = "black",
+  # bg.col = NA,
+  track.height = 0.2,
+  panel.fun = function(x, y) {
+    name = get.cell.meta.data("sector.index")
+    i = get.cell.meta.data("sector.numeric.index")
+    xlim = get.cell.meta.data("xlim")
+    ylim = get.cell.meta.data("ylim")
+
+    circos.yaxis(
+      side = "left",
+      at = c(0.8 * min(temp_value), round((
+        min(temp_value, na.rm = TRUE) + max(temp_value, na.rm = TRUE)
+      ) / 2, 2), round(max(
+        temp_value, na.rm = TRUE
+      ), 2)),
+      sector.index = get.all.sector.index()[1],
+      labels.cex = 0.4,
+      labels.niceFacing = FALSE
+    )
+
+    circos.lines(
+      x = mean(xlim, na.rm = TRUE),
+      y =  temp_value[i],
+      pch = 16,
+      cex = 8,
+      type = "h",
+      col = ggsci::pal_aaas()(n = 10)[4],
+      lwd = 2
+    )
+  }
+)
+
+##bmi
+range(df$bmi, na.rm = TRUE)
+temp_value <- df$bmi
+
+circos.track(
+  factors = df$factors,
+  # x = df$x,
+  y = temp_value,
+  ylim = c(
+    0.8 * min(temp_value, na.rm = TRUE),
+    1.1 * max(temp_value, na.rm = TRUE)
+  ),
+  bg.border = "black",
+  # bg.col = NA,
+  track.height = 0.2,
+  panel.fun = function(x, y) {
+    name = get.cell.meta.data("sector.index")
+    i = get.cell.meta.data("sector.numeric.index")
+    xlim = get.cell.meta.data("xlim")
+    ylim = get.cell.meta.data("ylim")
+
+    circos.yaxis(
+      side = "left",
+      at = c(
+        0.8 * min(temp_value, na.rm = TRUE),
+        round((
+          min(temp_value, na.rm = TRUE) + max(temp_value, na.rm = TRUE)
+        ) / 2, 2),
+        round(max(temp_value, na.rm = TRUE), 2)
+      ),
+      sector.index = get.all.sector.index()[1],
+      labels.cex = 0.4,
+      labels.niceFacing = FALSE
+    )
+
+    circos.lines(
+      x = mean(xlim, na.rm = TRUE),
+      y =  temp_value[i],
+      pch = 16,
+      cex = 8,
+      type = "h",
+      col = ggsci::pal_tron()(n = 10)[1],
+      lwd = 2
+    )
+
+    # circos.points(
+    #   x = mean(xlim),
+    #   y =  temp_value[i],
+    #   pch = 16,
+    #   cex = 0.8,
+    #   col = ggsci::pal_tron()(n = 10)[1]
+    # )
+  }
+)
+
+## sex
+temp_sex <- df$sex
+temp_sex[is.na(temp_sex)] <- "grey"
+temp_sex[temp_sex == "Female"] <- sex_color["Female"]
+temp_sex[temp_sex == "Male"] <- sex_color["Male"]
+
+circos.track(
+  factors = df$factors,
+  # x = df$x,
+  y = df$y,
+  ylim = c(0, 1),
+  bg.border = NA,
+  # bg.col = NA,
+  track.height = 0.1,
+  panel.fun = function(x, y) {
+    name = get.cell.meta.data("sector.index")
+    i = get.cell.meta.data("sector.numeric.index")
+    xlim = get.cell.meta.data("xlim")
+    ylim = get.cell.meta.data("ylim")
+
+    #text direction (dd) and adjusmtents (aa)
+    theta = circlize(mean(xlim), 1.3)[1, 1] %% 360
+    dd <-
+      ifelse(theta < 90 ||
+               theta > 270, "clockwise", "reverse.clockwise")
+    aa = c(0.5, 1)
+    # if(theta < 90 || theta > 270)  aa = c(0, 0.5)
+
+    circos.rect(
+      xleft = xlim[1],
+      ybottom = ylim[1],
+      xright = xlim[2],
+      ytop = ylim[2],
+      col = temp_sex[i],
+      border = NA
+    )
+  }
+)
+
+## group
+temp_group <- df$group
+temp_group[is.na(temp_group)] <- "grey"
+temp_group[temp_group == "Control"] <- group_color["Control"]
+temp_group[temp_group == "UC"] <- group_color["UC"]
+
+circos.track(
+  factors = df$factors,
+  # x = df$x,
+  y = df$y,
+  ylim = c(0, 1),
+  bg.border = NA,
+  # bg.col = NA,
+  track.height = 0.1,
+  panel.fun = function(x, y) {
+    name = get.cell.meta.data("sector.index")
+    i = get.cell.meta.data("sector.numeric.index")
+    xlim = get.cell.meta.data("xlim")
+    ylim = get.cell.meta.data("ylim")
+
+    #text direction (dd) and adjusmtents (aa)
+    theta = circlize(mean(xlim), 1.3)[1, 1] %% 360
+    dd <-
+      ifelse(theta < 90 ||
+               theta > 270, "clockwise", "reverse.clockwise")
+    aa = c(0.5, 1)
+    # if(theta < 90 || theta > 270)  aa = c(0, 0.5)
+
+    circos.rect(
+      xleft = xlim[1],
+      ybottom = ylim[1],
+      xright = xlim[2],
+      ytop = ylim[2],
+      col = temp_group[i],
+      border = NA
+    )
+  }
+)
 
 
-object_pos <-
-  object_pos %>%
-  impute_mv(method = "knn")
 
 
-###negative
-variable_info_neg <-
-  data_neg %>%
-  dplyr::select(name:"rt(s)") %>%
-  dplyr::rename(
-    variable_id = name,
-    Compound.name = description,
-    VIP = VIP,
-    fc = "Fold change",
-    p_value = "p-value",
-    mz = "m/z",
-    rt = "rt(s)"
-  ) %>%
-  dplyr::mutate(variable_id = paste(variable_id, "NEG", sep = "_")) %>%
-  as.data.frame()
+####Figure1_c
+library(ggpie)
+plot1 <-
+  subject_info %>%
+  dplyr::filter(group == "Control") %>%
+  dplyr::filter(cohort == "discovery") %>%
+  ggdonut(
+    group_key = "sex",
+    count_type = "full",
+    label_info = "all",
+    label_type = "horizon",
+    label_split = NULL,
+    label_size = 4,
+    label_pos = "in",
+    label_threshold = 10
+  ) +
+  scale_fill_manual(values = sex_color)
+plot1
 
-expression_data_neg <-
-  data_neg %>%
-  dplyr::select(-c(name:"rt(s)")) %>%
-  rename_all(~ str_replace_all(., "-", "_")) %>%
-  as.data.frame()
+plot2 <-
+  subject_info %>%
+  dplyr::filter(group == "UC") %>%
+  dplyr::filter(cohort == "discovery") %>%
+  ggdonut(
+    group_key = "sex",
+    count_type = "full",
+    label_info = "all",
+    label_type = "horizon",
+    label_split = NULL,
+    label_size = 4,
+    label_pos = "in",
+    label_threshold = 10
+  ) +
+  scale_fill_manual(values = sex_color)
+plot2
 
-sample_info_neg <-
-  data.frame(sample_id = colnames(expression_data_neg)) %>%
-  dplyr::mutate(group = case_when(
-    grepl("Ctr", sample_id) ~ "Control",
-    grepl("UC", sample_id) ~ "UC",
-    grepl("QC", sample_id) ~ "QC",
-    TRUE ~ "Unknown"
-  )) %>%
-  dplyr::mutate(class = case_when(group == "QC" ~ "QC", TRUE ~ "Subject"))
-
-
-rownames(expression_data_neg) <- variable_info_neg$variable_id
-
-dim(sample_info_pos)
-dim(sample_info_neg)
-sum(sample_info_pos$sample_id == sample_info_neg$sample_id)
-
-object_neg <-
-  create_mass_dataset(
-    sample_info = sample_info_neg,
-    variable_info = variable_info_neg,
-    expression_data = expression_data_neg
-  )
-
-object_neg <-
-  object_neg %>%
-  impute_mv(method = "knn")
-
-expression_data_pos <-
-  object_pos %>%
-  extract_expression_data()
-
-expression_data_neg <-
-  object_neg %>%
-  extract_expression_data()
-
-sample_info <-
-  sample_info_pos
-
-variable_info <-
-  rbind(
-    variable_info_pos %>% dplyr::mutate(polarity = "Positive"),
-    variable_info_neg %>% dplyr::mutate(polarity = "Negative")
-  )
-
-expression_data <-
-  rbind(expression_data_pos, expression_data_neg)
-
-rownames(expression_data) == variable_info$variable_id
-
-dir.create("3_data_analysis/1_metabolomics_data", showWarnings = TRUE)
-setwd("3_data_analysis/1_metabolomics_data/")
-
-dir.create("peaks")
-dir.create("metabolites")
-
-library(tidymass)
-
-sample_info <-
-  sample_info %>%
-  dplyr::left_join(subject_info, by = "sample_id")
-
-metabolite_info <-
-  variable_info %>%
-  dplyr::select(variable_id, Compound.name) %>%
-  dplyr::filter(!is.na(Compound.name))
+library(patchwork)
 
 
-# kegg_id <-
-#   metabolite_info$Compound.name %>%
-#   purrr::map(function(x){
-#     cat(x, " ")
-#     trans_ID(
-#       query = x,
-#       from = "Chemical Name",
-#       to = "KEGG",
-#       top = 1,
-#       server = "cts.fiehnlab"
-#     )
-#   })
-#
-# kegg_id <-
-#   kegg_id %>%
-#   do.call(rbind, .) %>%
-#   as.data.frame()
-#
-#
-# hmdb_id <-
-#   kegg_id$KEGG %>%
-#   purrr::map(function(x) {
-#     cat(x, " ")
-#     trans_ID(
-#       query = x,
-#       from = "KEGG",
-#       to = "Human Metabolome Database",
-#       top = 1,
-#       server = "cts.fiehnlab"
-#     )
-#   })
-#
-# hmdb_id <-
-#   hmdb_id %>%
-#   do.call(rbind, .) %>%
-#   as.data.frame()
-#
-# id <-
-#   data.frame(variable_id = metabolite_info$variable_id,
-#              Compound.name = metabolite_info$Compound.name,
-#              HMDB = hmdb_id$`Human Metabolome Database`,
-#              KEGG = kegg_id$KEGG)
-#
-# write.csv(id, "id.csv", row.names = FALSE)
+####chisq test for sex in Control and UC groups
 
-id <-
-  readr::read_csv("id.csv")
+temp_data1 <-
+  subject_info %>%
+  dplyr::filter(cohort == "discovery") %>%
+  dplyr::filter(group == "Control") %>%
+  pull(sex) %>%
+  table()
 
-variable_info <-
-  variable_info %>%
-  dplyr::left_join(id[, c("variable_id", "HMDB", "KEGG")], by = "variable_id")
 
-metabolomics_object <-
-  create_mass_dataset(
-    sample_info = sample_info,
-    variable_info = variable_info,
-    expression_data = expression_data
-  )
+temp_data2 <-
+  subject_info %>%
+  dplyr::filter(cohort == "discovery") %>%
+  dplyr::filter(group == "UC") %>%
+  pull(sex) %>%
+  table()
 
-save(metabolomics_object, file = "peaks/metabolomics_object.RData")
+rbind(temp_data1, temp_data2) %>%
+  chisq.test()
 
-####metabolites
-variable_info <-
-  variable_info %>%
-  dplyr::filter(!is.na(Compound.name))
 
-expression_data <-
-  expression_data[variable_info$variable_id, ]
+#####age
+library(ggstatsplot)
 
-metabolomics_object <-
-  create_mass_dataset(
-    sample_info = sample_info,
-    variable_info = variable_info,
-    expression_data = expression_data
-  )
+plot3 <-
+  ggbetweenstats(
+    data  = subject_info %>%
+      dplyr::filter(cohort == "discovery"),
+    x  = group,
+    y  = age,
+    type = "nonparametric",
+    pairwise.comparisons = FALSE,
+    pairwise.display = "all",
+    point.args = list(
+      alpha = 0.9,
+      size = 3,
+      position = position_jitter(width = 0.1)
+    )
+  ) +
+  theme_base +
+  labs(x = "", y = "Age (years)") +
+  theme(legend.position = "") +
+  scale_color_manual(values = group_color)
 
-save(metabolomics_object, file = "metabolites/metabolomics_object.RData")
+plot3
+
+####bmi
+library(ggstatsplot)
+
+plot4 <-
+  ggbetweenstats(
+    data  = subject_info %>%
+      dplyr::filter(cohort == "discovery"),
+    x  = group,
+    y  = bmi,
+    type = "nonparametric",
+    pairwise.comparisons = FALSE,
+    pairwise.display = "all",
+    point.args = list(
+      alpha = 0.9,
+      size = 3,
+      position = position_jitter(width = 0.1)
+    )
+  ) +
+  theme_base +
+  labs(x = "", y = "Age (years)") +
+  theme(legend.position = "") +
+  scale_color_manual(values = group_color)
+
+plot4
+
+plot <-
+  plot1 + plot2 + plot3 + plot4 + plot_layout(nrow = 1)
+
+plot
+
+ggsave(plot,
+       filename = "3_data_analysis/new_figures/Figure_1/Figure_1c.pdf",
+       width = 20,
+       height = 5)
