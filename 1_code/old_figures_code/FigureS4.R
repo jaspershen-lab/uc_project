@@ -42,7 +42,7 @@ plot <-
     centrality.type = "nonparametric"
   ) +
   theme_base +
-  labs(x = "", y = "IHC score") +
+  labs(x = "", y = "Concentration (ug/mg)") +
   theme(legend.position = "") +
   scale_color_manual(values = group_color)
 

@@ -68,7 +68,8 @@ data <-
   data.frame(
     group = c(rep("Vector", 4), rep("ASS1 OE", 3), rep("ASS1 ShRNA", 3)),
     value = c(1.14, 0.74, 1.22, 0.89, 0.87, 1.39, 0.96, 1.35, 1.16, 1.17)
-  )
+  ) %>%
+  dplyr::mutate(group = factor(group, levels = c("Vector", "ASS1 OE", "ASS1 ShRNA")))
 
 library(ggstatsplot)
 
@@ -109,7 +110,8 @@ data <-
   data.frame(
     group = c(rep("Vector", 4), rep("ASS1 OE", 3), rep("ASS1 ShRNA", 3)),
     value = c(1.67, 0.6, 0.9, 0.84, 0.88, 0.44, 1.06, 1.06, 0.67, 1.51)
-  )
+  ) %>%
+  dplyr::mutate(group = factor(group, levels = c("Vector", "ASS1 OE", "ASS1 ShRNA")))
 
 library(ggstatsplot)
 
@@ -166,7 +168,8 @@ data <-
       0.825179,
       0.534501
     )
-  )
+  ) %>%
+  dplyr::mutate(group = factor(group, levels = c("Vector", "ASS1 OE", "ASS1 ShRNA")))
 
 library(ggstatsplot)
 
@@ -218,7 +221,8 @@ data <-
   data.frame(
     group = c(rep("Vector", 4), rep("ASS1 OE", 3), rep("ASS1 ShRNA", 3)),
     value = c(1.44, 0.56, 1.2, 0.8, 0.8, 1.04, 0.72, 1.44, 0.4, 1.28)
-  )
+  ) %>%
+  dplyr::mutate(group = factor(group, levels = c("Vector", "ASS1 OE", "ASS1 ShRNA")))
 
 library(ggstatsplot)
 
@@ -281,7 +285,8 @@ data <-
       1.3171,
       0.5367
     )
-  )
+  ) %>%
+  dplyr::mutate(group = factor(group, levels = c("Vector", "ASS1 OE", "ASS1 ShRNA")))
 
 library(ggstatsplot)
 

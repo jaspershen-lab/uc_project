@@ -27,7 +27,6 @@ data <-
   ) %>%
   dplyr:::mutate(group = factor(group, levels = c("DSS", "Arg")))
 
-
 library(ggstatsplot)
 
 plot <-
@@ -57,10 +56,6 @@ ggsave(plot,
        filename = "figure_s15_1.pdf",
        width = 5,
        height = 5)
-
-
-
-
 
 
 ###
@@ -219,7 +214,7 @@ plot <-
 plot
 
 ggsave(plot,
-       filename = "figure_s15_3.pdf",
+       filename = "figure_s15_4.pdf",
        width = 5,
        height = 5)
 
@@ -274,6 +269,6 @@ plot <-
 plot
 
 ggsave(plot,
-       filename = "figure_s15_4.pdf",
+       filename = "figure_s15_5.pdf",
        width = 5,
        height = 5)

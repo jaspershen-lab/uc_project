@@ -1,5 +1,6 @@
 library(tidyverse)
 library(ggplot2)
+library(scales)
 
 class_color <-
   c("QC" = "#EFC000FF", "Subject" = "#0073C2FF")

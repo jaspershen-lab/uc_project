@@ -118,7 +118,9 @@ plot <-
       alpha = 0.9,
       size = 3,
       position = position_jitter(width = 0.1)
-    )
+    ),
+    centrality.label.args = list(size = 4),
+    centrality.type = "nonparametric"
   ) +
   theme_base +
   labs(x = "", y = "ASS1") +

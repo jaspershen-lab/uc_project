@@ -10,6 +10,43 @@ dir.create(
 )
 setwd("3_data_analysis/old_figures/Figure9")
 
+
+###Figure 9D
+data <-
+  readxl::read_xlsx("../../../2_data/Source Data file for NCOMMS-22-46768-update-2.xlsx",
+                    sheet = "Fig9D")
+
+colnames(data)[1] <- "time"
+
+colnames(data) <-
+  colnames(data) %>%
+  stringr::str_replace("Cycle\\: [0-9]{1,2}  0673 ", "") %>%
+  stringr::str_replace("μM_Y", "") %>%
+  stringr::str_trim()
+
+colnames(data)[-1] <-
+paste0(as.character(as.numeric(colnames(data)[-1]) * 1000), "_nM")
+
+
+plot <-
+data %>%
+  pivot_longer(cols = -time,
+               names_to = "concentration",
+               values_to = "value") %>%
+  dplyr::mutate(concentration = factor(concentration, levels = unique(concentration))) %>%
+  ggplot(aes(x = time, y = value, color = concentration)) +
+  geom_line(aes(group = concentration,
+                color = concentration)) +
+  theme_base +
+  ggsci::scale_color_jco() +
+  labs(x = "Time (seconds)")
+
+
+ggsave(plot,
+       filename = "figure9d.pdf",
+       width = 5,
+       height = 7)
+
 ###Figure 9E
 data <-
   readxl::read_xlsx("../../../2_data/Source Data file for NCOMMS-22-46768-update-2.xlsx",
@@ -20,7 +57,7 @@ colnames(data)[1] <- "Day"
 data <-
   data %>%
   as.data.frame() %>%
-  rename_with(~ gsub("\\.\\.\\.", "_", .)) %>%
+  rename_with( ~ gsub("\\.\\.\\.", "_", .)) %>%
   tidyr::pivot_longer(cols = -Day,
                       names_to = "sample_id",
                       values_to = "value") %>%
@@ -492,14 +529,11 @@ ggsave(plot,
        height = 5)
 
 
-t.test(ass1$value[ass1$group == "Control"],
-       ass1$value[ass1$group == "Control+C-01"])
+t.test(ass1$value[ass1$group == "Control"], ass1$value[ass1$group == "Control+C-01"])
 
-t.test(ass1$value[ass1$group == "Model"],
-       ass1$value[ass1$group == "Model+C-01"])
+t.test(ass1$value[ass1$group == "Model"], ass1$value[ass1$group == "Model+C-01"])
 
-t.test(ass1$value[ass1$group == "Control"],
-       ass1$value[ass1$group == "Model"])
+t.test(ass1$value[ass1$group == "Control"], ass1$value[ass1$group == "Model"])
 
 
 ##cox2
@@ -534,14 +568,11 @@ ggsave(plot,
        width = 5,
        height = 5)
 
-t.test(cox2$value[cox2$group == "Control"],
-       cox2$value[cox2$group == "Control+C-01"])
+t.test(cox2$value[cox2$group == "Control"], cox2$value[cox2$group == "Control+C-01"])
 
-t.test(cox2$value[cox2$group == "Model"],
-       cox2$value[cox2$group == "Model+C-01"])
+t.test(cox2$value[cox2$group == "Model"], cox2$value[cox2$group == "Model+C-01"])
 
-t.test(cox2$value[cox2$group == "Control"],
-       cox2$value[cox2$group == "Model"])
+t.test(cox2$value[cox2$group == "Control"], cox2$value[cox2$group == "Model"])
 
 ##p_stat3/stat3
 plot <-
@@ -576,14 +607,11 @@ ggsave(plot,
        height = 5)
 
 
-t.test(p_stat3_stat3$value[p_stat3_stat3$group == "Control"],
-       p_stat3_stat3$value[p_stat3_stat3$group == "Control+C-01"])
+t.test(p_stat3_stat3$value[p_stat3_stat3$group == "Control"], p_stat3_stat3$value[p_stat3_stat3$group == "Control+C-01"])
 
-t.test(p_stat3_stat3$value[p_stat3_stat3$group == "Model"],
-       p_stat3_stat3$value[p_stat3_stat3$group == "Model+C-01"])
+t.test(p_stat3_stat3$value[p_stat3_stat3$group == "Model"], p_stat3_stat3$value[p_stat3_stat3$group == "Model+C-01"])
 
-t.test(p_stat3_stat3$value[p_stat3_stat3$group == "Control"],
-       p_stat3_stat3$value[p_stat3_stat3$group == "Model"])
+t.test(p_stat3_stat3$value[p_stat3_stat3$group == "Control"], p_stat3_stat3$value[p_stat3_stat3$group == "Model"])
 
 ##p_mtor/mtor
 plot <-
@@ -617,14 +645,11 @@ ggsave(plot,
        width = 5,
        height = 5)
 
-t.test(p_mtor_mtor$value[p_mtor_mtor$group == "Control"],
-       p_mtor_mtor$value[p_mtor_mtor$group == "Control+C-01"])
+t.test(p_mtor_mtor$value[p_mtor_mtor$group == "Control"], p_mtor_mtor$value[p_mtor_mtor$group == "Control+C-01"])
 
-t.test(p_mtor_mtor$value[p_mtor_mtor$group == "Control"],
-       p_mtor_mtor$value[p_mtor_mtor$group == "Model"])
+t.test(p_mtor_mtor$value[p_mtor_mtor$group == "Control"], p_mtor_mtor$value[p_mtor_mtor$group == "Model"])
 
-t.test(p_mtor_mtor$value[p_mtor_mtor$group == "Model"],
-       p_mtor_mtor$value[p_mtor_mtor$group == "Model+C-01"])
+t.test(p_mtor_mtor$value[p_mtor_mtor$group == "Model"], p_mtor_mtor$value[p_mtor_mtor$group == "Model+C-01"])
 
 
 
@@ -661,14 +686,11 @@ ggsave(plot,
        height = 5)
 
 
-t.test(p_s6_s6$value[p_s6_s6$group == "Control"],
-       p_s6_s6$value[p_s6_s6$group == "Control+C-01"])
+t.test(p_s6_s6$value[p_s6_s6$group == "Control"], p_s6_s6$value[p_s6_s6$group == "Control+C-01"])
 
-t.test(p_s6_s6$value[p_s6_s6$group == "Control"],
-       p_s6_s6$value[p_s6_s6$group == "Model"])
+t.test(p_s6_s6$value[p_s6_s6$group == "Control"], p_s6_s6$value[p_s6_s6$group == "Model"])
 
-t.test(p_s6_s6$value[p_s6_s6$group == "Model"],
-       p_s6_s6$value[p_s6_s6$group == "Model+C-01"])
+t.test(p_s6_s6$value[p_s6_s6$group == "Model"], p_s6_s6$value[p_s6_s6$group == "Model+C-01"])
 
 
 ###Figure 9M

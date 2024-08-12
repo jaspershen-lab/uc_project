@@ -14,7 +14,6 @@ sample_info <-
   dplyr::filter(class == "Subject") %>%
   extract_sample_info()
 
-
 library(ggpie)
 plot <-
   sample_info %>%

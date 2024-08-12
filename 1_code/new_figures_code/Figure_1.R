@@ -3,52 +3,6 @@ setwd(get_project_wd())
 rm(list = ls())
 source('1_code/100_tools.R')
 
-data_pos <- readxl::read_xlsx("2_data/Source Data file for NCOMMS-22-46768-update-2.xlsx",
-                              sheet = 1)
-data_neg <- readxl::read_xlsx("2_data/Source Data file for NCOMMS-22-46768-update-2.xlsx",
-                              sheet = 2)
-
-subject1 <- readxl::read_xlsx("2_data/participant_info.xlsx", sheet = 1)
-subject2 <- readxl::read_xlsx("2_data/participant_info.xlsx", sheet = 2)
-
-colnames(subject1) <- c(
-  "subject_id",
-  "number",
-  "participant_name",
-  "case_id",
-  "date",
-  "mayo_score",
-  "sex",
-  "age",
-  "GWDB",
-  "ESR",
-  "CPR",
-  "HGB",
-  "TP",
-  "ALB",
-  "height",
-  "weight",
-  "BMI",
-  "diagnosis"
-)
-colnames(subject2) <- c("subject_id", "number", "participant_name", "sex", "age", "BMI")
-
-
-subject1$subject_id <- paste("UC", subject1$subject_id, sep = "_")
-subject2$subject_id <- paste("Ctr", subject2$subject_id, sep = "_")
-
-dim(subject1)
-dim(subject2)
-
-subject_info <-
-  subject1 %>%
-  dplyr::full_join(subject2, by = colnames(subject2))
-
-subject_info <-
-  subject_info %>%
-  dplyr::mutate(sex = case_when(sex == "男" ~ "Male", sex == "女" ~ "Female")) %>%
-  dplyr::mutate(sample_id = subject_id)
-
 ###positive
 variable_info_pos <-
   data_pos %>%
@@ -68,7 +22,7 @@ variable_info_pos <-
 expression_data_pos <-
   data_pos %>%
   dplyr::select(-c(name:"rt(s)")) %>%
-  rename_all( ~ str_replace_all(., "-", "_")) %>%
+  rename_all(~ str_replace_all(., "-", "_")) %>%
   as.data.frame()
 
 rownames(expression_data_pos) <- variable_info_pos$variable_id
@@ -116,7 +70,7 @@ variable_info_neg <-
 expression_data_neg <-
   data_neg %>%
   dplyr::select(-c(name:"rt(s)")) %>%
-  rename_all( ~ str_replace_all(., "-", "_")) %>%
+  rename_all(~ str_replace_all(., "-", "_")) %>%
   as.data.frame()
 
 sample_info_neg <-

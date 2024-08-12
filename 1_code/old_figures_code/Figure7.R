@@ -154,7 +154,7 @@ plot
 
 ggsave(plot,
        filename = "figure7a_1.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 ##cox2
@@ -186,7 +186,7 @@ plot
 
 ggsave(plot,
        filename = "figure7a_2.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 ##p_stat3/stat3
@@ -218,7 +218,7 @@ plot
 
 ggsave(plot,
        filename = "figure7a_3.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 ##p_mtor/mtor
@@ -250,7 +250,7 @@ plot
 
 ggsave(plot,
        filename = "figure7a_4.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 ###p_s6/s6
@@ -282,7 +282,7 @@ plot
 
 ggsave(plot,
        filename = "figure7a_5.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 
@@ -336,7 +336,7 @@ plot
 
 ggsave(plot,
        filename = "figure7b.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 
@@ -521,7 +521,7 @@ plot
 
 ggsave(plot,
        filename = "figure7c_1.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 ##cox2
@@ -553,7 +553,7 @@ plot
 
 ggsave(plot,
        filename = "figure7c_2.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 ##p_stat3/stat3
@@ -585,7 +585,7 @@ plot
 
 ggsave(plot,
        filename = "figure7c_3.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 ##p_mtor/mtor
@@ -617,7 +617,7 @@ plot
 
 ggsave(plot,
        filename = "figure7c_4.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 ###p_s6/s6
@@ -649,7 +649,7 @@ plot
 
 ggsave(plot,
        filename = "figure7c_5.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 
@@ -710,5 +710,5 @@ plot
 
 ggsave(plot,
        filename = "figure7d.pdf",
-       width = 6,
+       width = 5,
        height = 5)

@@ -170,7 +170,7 @@ plot
 
 ggsave(plot,
        filename = "figure_s28a_1.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 ##cox2
@@ -202,7 +202,7 @@ plot
 
 ggsave(plot,
        filename = "figure_s28a_2.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 ##p_stat3/stat3
@@ -234,7 +234,7 @@ plot
 
 ggsave(plot,
        filename = "figure_s28a_3.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 ##p_mtor/mtor
@@ -266,7 +266,7 @@ plot
 
 ggsave(plot,
        filename = "figure_s28a_4.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 ###p_s6/s6
@@ -298,7 +298,7 @@ plot
 
 ggsave(plot,
        filename = "figure_s28a_5.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 
@@ -355,5 +355,5 @@ plot
 
 ggsave(plot,
        filename = "figure_s28b.pdf",
-       width = 6,
+       width = 5,
        height = 5)

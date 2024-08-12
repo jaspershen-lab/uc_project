@@ -353,7 +353,7 @@ plot
 
 ggsave(plot,
        filename = "figure4f.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 
@@ -399,7 +399,7 @@ plot
 
 ggsave(plot,
        filename = "figure4g.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 
@@ -445,7 +445,7 @@ plot
 
 ggsave(plot,
        filename = "figure4h.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 ###Figure 4I
@@ -569,7 +569,7 @@ plot
 
 ggsave(plot,
        filename = "figure4i_1.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 ##cox2
@@ -599,7 +599,7 @@ plot
 
 ggsave(plot,
        filename = "figure4i_2.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 ##p_stat3/stat3
@@ -629,7 +629,7 @@ plot
 
 ggsave(plot,
        filename = "figure4i_3.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 
@@ -660,7 +660,7 @@ plot
 
 ggsave(plot,
        filename = "figure4i_4.pdf",
-       width = 6,
+       width = 5,
        height = 5)
 
 ###p_s6/s6
@@ -690,9 +690,8 @@ plot
 
 ggsave(plot,
        filename = "figure4i_5.pdf",
-       width = 6,
+       width = 5,
        height = 5)
-
 
 
 ###figure 4J
