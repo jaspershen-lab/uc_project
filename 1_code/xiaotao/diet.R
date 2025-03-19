@@ -3,7 +3,37 @@ setwd(get_project_wd())
 rm(list = ls())
 source('1_code/100_tools.R')
 
-data <-
-  readxl::read_xlsx("2_data/diet K方检验.xlsx")
+data_discovery <-
+  readxl::read_xlsx("2_data/diet K方检验.xlsx", sheet = 2, col_names = FALSE)
 
-dir.create("3_data_analysis/new_figures/Figure_2", recursive = TRUE)
+data_discovery[c(2,4),2:4] %>%
+  as.data.frame() %>%
+  chisq.test()
+
+data_discovery[c(2,4),6:8] %>%
+  as.data.frame() %>%
+  chisq.test()
+
+
+data_validation1 <-
+  readxl::read_xlsx("2_data/diet K方检验.xlsx", sheet = 3, col_names = FALSE)
+
+data_validation1[c(2,4),2:4] %>%
+  as.data.frame() %>%
+  chisq.test()
+
+data_validation1[c(2,4),6:8] %>%
+  as.data.frame() %>%
+  chisq.test()
+
+
+data_validation1 <-
+  readxl::read_xlsx("2_data/diet K方检验.xlsx", sheet = 3, col_names = FALSE)
+
+data_validation1[c(2,4),2:4] %>%
+  as.data.frame() %>%
+  chisq.test()
+
+data_validation1[c(2,4),6:8] %>%
+  as.data.frame() %>%
+  chisq.test()
