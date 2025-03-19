@@ -101,6 +101,8 @@ data3 <-
 data <-
   rbind(data1, data2, data3)
 
+library(ggstatsplot)
+
 plot1 <-
   ggbetweenstats(
     data  = data1,

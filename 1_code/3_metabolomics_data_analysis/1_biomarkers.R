@@ -56,6 +56,14 @@ ggsave(plot,
        width = 6.5,
        height = 5)
 
+metabolomics_object %>%
+  activate_mass_dataset(what = "variable_info") %>%
+  dplyr::filter(p_value < 0.05 &
+                  VIP > 1) %>%
+  extract_variable_info() %>%
+  dplyr::arrange(fc) %>%
+  dplyr::filter(!is.na(Compound.name))
+
 ####tsne
 library(Rtsne)
 ####using the biomarkers
