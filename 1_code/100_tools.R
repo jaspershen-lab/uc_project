@@ -61,12 +61,19 @@ disease_color5 <-
     "C_01" = "#7AA6DCFF"
   )
 
+
 disease_color6 <-
   c(
     "Control" = "#8F7700FF",
     "Arg" = "#0073C2FF"
   )
 
+disease_color7 <-
+  c(
+    "Control" = "#8F7700FF",
+    "Model" = "#A73030FF",
+    "Arg" = "#0073C2FF"
+  )
 
 show_col(ggsci::pal_jco()(n = 10))
 

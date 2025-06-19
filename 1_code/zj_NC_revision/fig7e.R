@@ -58,7 +58,10 @@ plot <-
 plot
 
 
-
+ggsave(plot,
+       filename = "figure7e.pdf",
+       width = 5,
+       height = 5)
 
 
 library(dplyr)
@@ -104,3 +107,41 @@ plot <- plot + scale_x_discrete(
 )
 
 print(plot)
+
+
+ggsave(plot,
+       filename = "figure7e.pdf",
+       width = 5,
+       height = 5)
+
+
+
+
+
+
+
+plot <-
+  ggbetweenstats(
+    data  = ass1,
+    x  = group,
+    y  = value,
+    type = "parametric",
+    pairwise.comparisons = TRUE,  # Enable pairwise comparisons
+    pairwise.display = "all",
+    p.adjust.method = "none",
+    point.args = list(
+      alpha = 0.9,
+      size = 3,
+      color = "black",
+      position = position_jitter(width = 0.1)
+    ),
+    centrality.plotting = FALSE,  # This removes the red dot
+    centrality.label.args = list(size = 4),
+    centrality.type = "nonparametric"
+  ) +
+  theme_bw() +
+  labs(x = "", y = "ASS1", title = "ASS1") +
+  theme(legend.position = "",
+        axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_y_continuous(limits = c(0, max(ass1$value) * 1.1))  # Start from 0
+plot
