@@ -5,6 +5,13 @@ setwd(get_project_wd())
 rm(list = ls())
 source('1_code/100_tools.R')
 
+
+###使用原代码图像!!!
+
+
+
+
+
 # 读取数据
 data1 <-
   readxl::read_xlsx("2_data/Source Data file for NCOMMS-22-46768-update-2.xlsx",
