@@ -47,3 +47,13 @@ po/*~
 
 # RStudio Connect folder
 rsconnect/
+
+
+.DS_Store
+._*
+
+4_manuscript
+4_manuscript/
+
+5_summary
+5_summary/
