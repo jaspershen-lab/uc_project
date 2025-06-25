@@ -148,38 +148,6 @@ ezANOVA(
 
 
 
-
-########################
-# 计算每个受试者的总DAI负担（AUC）
-auc_data <- balanced_data %>%
-  group_by(sample_id, group) %>%
-  summarise(total_dai = sum(value), .groups = 'drop')
-
-# t检验比较
-cat("=== Figure 7c DAI - AUC方法 ===\n")
-
-# Control vs DSS
-t1 <- t.test(auc_data$total_dai[auc_data$group == "Control"], 
-             auc_data$total_dai[auc_data$group == "DSS"])
-cat("Control vs DSS: p =", format(t1$p.value, scientific = TRUE), "\n")
-
-# Control vs C_01
-t2 <- t.test(auc_data$total_dai[auc_data$group == "Control"], 
-             auc_data$total_dai[auc_data$group == "C_01"])
-cat("Control vs C_01: p =", format(t2$p.value, scientific = TRUE), "\n")
-
-# DSS vs C_01
-t3 <- t.test(auc_data$total_dai[auc_data$group == "DSS"], 
-             auc_data$total_dai[auc_data$group == "C_01"])
-cat("DSS vs C_01: p =", format(t3$p.value, scientific = TRUE), "\n")
-
-# 查看各组的AUC均值
-auc_summary <- auc_data %>%
-  group_by(group) %>%
-  summarise(mean_auc = mean(total_dai), sd_auc = sd(total_dai))
-print(auc_summary)
-
-
 ###Figure 9F
 data <-
   readxl::read_xlsx("../../../2_data/Source Data file for NCOMMS-22-46768-update-2.xlsx",
