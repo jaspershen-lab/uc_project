@@ -17,6 +17,8 @@ temp_data <-
   activate_mass_dataset(what = "sample_info") %>%
   dplyr::filter(!is.na(mayo_score))
 
+library(plyr)
+
 temp_variable_info <-
   temp_data@variable_info[, c("variable_id", "Compound.name", "fc", "p_value")] %>%
   plyr::dlply(.variables = .(Compound.name)) %>%
@@ -26,7 +28,6 @@ temp_variable_info <-
   }) %>%
   do.call(rbind, .) %>%
   as.data.frame()
-
 
 temp_data <-
   temp_data %>%
