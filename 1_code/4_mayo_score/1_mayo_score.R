@@ -134,5 +134,14 @@ temp_data %>%
   dplyr::filter(Compound.name == "L-Arginine") %>%
   pivot_longer() %>%
   dplyr::left_join(temp_data@sample_info, by = "sample_id") %>%
-  ggplot(aes(value, mayo_score)) +
+  ggplot(aes(mayo_score, value)) +
+  geom_point()
+
+temp_data %>%
+  activate_mass_dataset(what = "variable_info") %>%
+  dplyr::filter(Compound.name == "L-Arginine") %>%
+  log(10) %>% 
+  pivot_longer() %>%
+  dplyr::left_join(temp_data@sample_info, by = "sample_id") %>%
+  ggplot(aes(mayo_score, value)) +
   geom_point()
